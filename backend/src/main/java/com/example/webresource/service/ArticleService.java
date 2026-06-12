@@ -81,7 +81,9 @@ public class ArticleService {
 
     @Transactional
     public void delete(String title) {
-        articleRepository.deleteById(title);
+
+        articleRepository.findByTitle(title)
+                .ifPresent(articleRepository::delete);
     }
 
     // ==================== HELPER METHODS ====================
@@ -95,13 +97,17 @@ public class ArticleService {
     }
 
     private ArticleResponse toResponse(Article article) {
-        List<String> refTitles = article.getRefs().stream()
-                .map(Article::getTitle)
-                .collect(Collectors.toList());
 
-        long referrerCount = articleRepository.countReferrersByTitle(article.getTitle());
+        List<String> refTitles = article.getRefs()
+                .stream()
+                .map(Article::getTitle)
+                .toList();
+
+        long referrerCount =
+                articleRepository.countReferrersByTitle(article.getTitle());
 
         return new ArticleResponse(
+                article.getId(),
                 article.getTitle(),
                 article.getSummary(),
                 article.getBody(),

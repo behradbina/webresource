@@ -49,7 +49,7 @@ function HomePage() {
                 {
                     articles.map(article => (
                         <ArticleCard
-                            key={article.title}
+                            key={article.id}
                             article={article}
                             citationCount={citationCounts[article.title] || 0}
                         />

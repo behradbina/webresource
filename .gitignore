@@ -97,3 +97,7 @@ backend/data/
 *.njsproj
 *.sln
 *.sw?
+
+
+merge.py
+all_contents.txt
