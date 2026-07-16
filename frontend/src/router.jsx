@@ -6,6 +6,12 @@ import ArticlePage from "./pages/ArticlePage";
 import CreateArticlePage from "./pages/CreateArticlePage";
 import NotFoundPage from "./pages/NotFoundPage";
 
+// New Core Pages and Components
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import ProfilePage from "./pages/ProfilePage";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -21,7 +27,27 @@ const router = createBrowserRouter([
             },
             {
                 path: "create",
-                element: <CreateArticlePage />
+                element: (
+                    <ProtectedRoute>
+                        <CreateArticlePage />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "profile",
+                element: (
+                    <ProtectedRoute>
+                        <ProfilePage />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "login",
+                element: <LoginPage />
+            },
+            {
+                path: "register",
+                element: <RegisterPage />
             }
         ]
     },
