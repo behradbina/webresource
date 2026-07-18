@@ -3,11 +3,14 @@ package com.example.webresource.service;
 import com.example.webresource.dto.ArticleRequest;
 import com.example.webresource.dto.ArticleResponse;
 import com.example.webresource.model.Article;
+import com.example.webresource.model.User;
 import com.example.webresource.repository.ArticleRepository;
+import com.example.webresource.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,9 +18,11 @@ import java.util.stream.Collectors;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;
+        this.userRepository = userRepository;
     }
 
     // ==================== READ OPERATIONS ====================
@@ -64,24 +69,26 @@ public class ArticleService {
     // ==================== WRITE OPERATIONS ====================
 
     @Transactional
-    public ArticleResponse create(ArticleRequest req) {
-        // Resolve references from titles to actual Article entities
+    public ArticleResponse create(ArticleRequest req, String authorUsername) {
+        User author = userRepository.findByUsername(authorUsername)
+                .orElseThrow(() -> new RuntimeException("Author not found"));
+
+        // Resolve references safely without ambiguous method references
         List<Article> referencedArticles = req.refs != null ?
                 req.refs.stream()
-                        .map(articleRepository::findByTitle)
-                        .filter(java.util.Optional::isPresent)
-                        .map(java.util.Optional::get)
+                        .map(title -> articleRepository.findByTitle(title))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
                         .collect(Collectors.toList()) :
                 List.of();
 
-        Article article = new Article(req.title, req.summary, req.body, referencedArticles);
+        Article article = new Article(req.title, req.summary, req.body, referencedArticles, author);
         Article saved = articleRepository.save(article);
         return toResponse(saved);
     }
 
     @Transactional
     public void delete(String title) {
-
         articleRepository.findByTitle(title)
                 .ifPresent(articleRepository::delete);
     }
@@ -97,14 +104,14 @@ public class ArticleService {
     }
 
     private ArticleResponse toResponse(Article article) {
-
         List<String> refTitles = article.getRefs()
                 .stream()
                 .map(Article::getTitle)
                 .toList();
 
-        long referrerCount =
-                articleRepository.countReferrersByTitle(article.getTitle());
+        long referrerCount = articleRepository.countReferrersByTitle(article.getTitle());
+
+        String authorUsername = article.getAuthor() != null ? article.getAuthor().getUsername() : "Anonymous";
 
         return new ArticleResponse(
                 article.getId(),
@@ -113,7 +120,8 @@ public class ArticleService {
                 article.getBody(),
                 article.getPublishTime(),
                 refTitles,
-                referrerCount
+                referrerCount,
+                authorUsername
         );
     }
 }

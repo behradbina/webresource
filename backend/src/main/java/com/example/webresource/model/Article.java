@@ -1,7 +1,6 @@
 package com.example.webresource.model;
 
 import jakarta.persistence.*;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +22,7 @@ public class Article {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
+    // Fixed: Changed from 'long' back to 'Instant' to match our updated service & JPA mapping
     @Column(name = "publish_time", nullable = false)
     private Instant publishTime;
 
@@ -37,12 +37,19 @@ public class Article {
     @ManyToMany(mappedBy = "refs")
     private List<Article> referrers = new ArrayList<>();
 
+    // Fixed: Added JPA mappings for author
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
+
     protected Article() {}
 
-    public Article(String title, String summary, String body, List<Article> refs) {
+    // Fixed: Standardized to use List<Article> refs and User author
+    public Article(String title, String summary, String body, List<Article> refs, User author) {
         this.title = title;
         this.summary = summary;
         this.body = body;
+        this.author = author;
         this.publishTime = Instant.now();
 
         if (refs != null) {
@@ -80,6 +87,10 @@ public class Article {
         return referrers;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -102,5 +113,9 @@ public class Article {
 
     public void setReferrers(List<Article> referrers) {
         this.referrers = referrers;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

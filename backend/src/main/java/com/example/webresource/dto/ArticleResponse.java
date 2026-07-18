@@ -6,18 +6,13 @@ import java.util.List;
 public class ArticleResponse {
 
     public Long id;
-
     public String title;
-
     public String summary;
-
     public String body;
-
     public Instant publishTime;
-
     public List<String> refs;
-
     public long citationCount;
+    public String authorUsername; // Identifies the author in views
 
     public ArticleResponse(
             Long id,
@@ -26,7 +21,8 @@ public class ArticleResponse {
             String body,
             Instant publishTime,
             List<String> refs,
-            long citationCount
+            long citationCount,
+            String authorUsername
     ) {
         this.id = id;
         this.title = title;
@@ -35,5 +31,6 @@ public class ArticleResponse {
         this.publishTime = publishTime;
         this.refs = refs;
         this.citationCount = citationCount;
+        this.authorUsername = authorUsername;
     }
 }

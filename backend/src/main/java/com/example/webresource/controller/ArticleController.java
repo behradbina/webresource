@@ -6,6 +6,7 @@ import com.example.webresource.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,7 @@ public class ArticleController {
     }
 
     // GET /api/articles?q=...&sort=...
+    // Fixed: Changed return type from List<Article> to List<ArticleResponse>
     @GetMapping
     public List<ArticleResponse> getAll(
             @RequestParam(required = false) String q,
@@ -27,6 +29,7 @@ public class ArticleController {
     }
 
     // GET /api/articles/{title}
+    // Fixed: Changed variable type from Article to ArticleResponse
     @GetMapping("/{title}")
     public ResponseEntity<?> getOne(@PathVariable String title) {
         ArticleResponse a = service.getOne(title);
@@ -35,8 +38,13 @@ public class ArticleController {
     }
 
     // POST /api/articles
+    // Fixed: Consolidated into a single secure POST mapping that uses java.security.Principal
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody ArticleRequest req) {
+    public ResponseEntity<?> create(@RequestBody ArticleRequest req, Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
         if (service.exists(req.title)) {
             return ResponseEntity.status(409).body("Title must be unique");
         }
@@ -45,8 +53,7 @@ public class ArticleController {
             return ResponseEntity.status(422).body("Self reference not allowed");
         }
 
-
-        ArticleResponse created = service.create(req);
+        ArticleResponse created = service.create(req, principal.getName());
         return ResponseEntity.status(201).body(created);
     }
 
@@ -61,6 +68,7 @@ public class ArticleController {
     }
 
     // GET /api/articles/{title}/referrers
+    // Fixed: Changed return type from List<Article> to List<ArticleResponse>
     @GetMapping("/{title}/referrers")
     public List<ArticleResponse> referrers(@PathVariable String title) {
         return service.getReferrers(title);
