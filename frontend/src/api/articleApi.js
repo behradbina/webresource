@@ -15,8 +15,8 @@ API.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
-export const getArticles = (q = "", sort = "refs") => {
-    return API.get("/articles", { params: { q, sort } });
+export const getArticles = (q = "", sort = "refs", config = {}) => {
+    return API.get("/articles", { ...config, params: { q, sort } });
 };
 
 export const getArticle = (title) => {

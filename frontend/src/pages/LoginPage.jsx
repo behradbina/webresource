@@ -20,61 +20,40 @@ function LoginPage() {
         try {
             await login(username, password);
             toast.success("Welcome back!");
-            navigate("/profile");
+            navigate("/");
         } catch (err) {
             toast.error(err.response?.data || "Invalid login credentials");
         }
     };
 
-    const containerStyle = {
-        maxWidth: "400px",
-        margin: "80px auto",
-        padding: "24px",
-        border: "1px solid var(--border)",
-        borderRadius: "8px",
-        background: "var(--bg)",
-        textAlign: "left"
-    };
-
-    const inputStyle = {
-        width: "100%",
-        padding: "10px",
-        margin: "8px 0 16px",
-        borderRadius: "6px",
-        border: "1px solid var(--border)",
-        background: "var(--bg)",
-        color: "var(--text-h)",
-        boxSizing: "border-box"
-    };
-
-    const buttonStyle = {
-        width: "100%",
-        padding: "12px",
-        background: "var(--accent)",
-        color: "#000",
-        border: "none",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontWeight: "bold",
-        fontSize: "16px"
-    };
-
     return (
-        <div style={containerStyle}>
-            <h2 style={{ textAlign: "center", marginBottom: "24px" }}>Sign In</h2>
+        <div className="auth-container">
+            <h2>Sign In</h2>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="auth-form-group">
                     <label>Username</label>
-                    <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} style={inputStyle} />
+                    <input 
+                        type="text" 
+                        value={username} 
+                        onChange={(e) => setUsername(e.target.value)} 
+                        className="auth-input"
+                    />
                 </div>
-                <div>
+                <div className="auth-form-group">
                     <label>Password</label>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={inputStyle} />
+                    <input 
+                        type="password" 
+                        value={password} 
+                        onChange={(e) => setPassword(e.target.value)} 
+                        className="auth-input"
+                    />
                 </div>
-                <button type="submit" style={buttonStyle}>Log In</button>
+                <button type="submit" className="auth-button">
+                    Log In
+                </button>
             </form>
-            <p style={{ marginTop: "16px", textAlign: "center", fontSize: "14px" }}>
-                New around here? <Link to="/register" style={{ color: "var(--accent)" }}>Register here</Link>
+            <p className="auth-link">
+                New around here? <Link to="/register">Register here</Link>
             </p>
         </div>
     );

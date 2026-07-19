@@ -35,10 +35,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Permit H2 Console access
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                // Important: Disable frame options for H2 Console
+                .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -46,7 +50,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Cryptographic work factor salting
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

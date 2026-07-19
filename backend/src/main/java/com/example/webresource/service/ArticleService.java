@@ -103,6 +103,16 @@ public class ArticleService {
         return articleRepository.countReferrersByTitle(title);
     }
 
+    public boolean isAuthor(String title, String username) {
+        Optional<Article> articleOpt = articleRepository.findByTitle(title);
+        if (articleOpt.isEmpty()) {
+            return false;
+        }
+        Article article = articleOpt.get();
+        User author = article.getAuthor();
+        return author != null && author.getUsername().equals(username);
+    }
+
     private ArticleResponse toResponse(Article article) {
         List<String> refTitles = article.getRefs()
                 .stream()
@@ -124,4 +134,6 @@ public class ArticleService {
                 authorUsername
         );
     }
+
+
 }

@@ -92,7 +92,7 @@ function ProfilePage() {
     const actionBtn = {
         padding: "8px 16px",
         background: "var(--accent)",
-        color: "#fff",
+        color: "#000000",
         border: "none",
         borderRadius: "6px",
         cursor: "pointer",

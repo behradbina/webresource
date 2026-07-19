@@ -68,79 +68,78 @@ function RegisterPage() {
         }
     };
 
-    const containerStyle = {
-        maxWidth: "400px",
-        margin: "40px auto",
-        padding: "24px",
-        border: "1px solid var(--border)",
-        borderRadius: "8px",
-        background: "var(--bg)",
-        textAlign: "left"
-    };
-
-    const inputStyle = {
-        width: "100%",
-        padding: "10px",
-        margin: "8px 0 16px",
-        borderRadius: "6px",
-        border: "1px solid var(--border)",
-        background: "var(--bg)",
-        color: "#dad3d3",
-        boxSizing: "border-box"
-    };
-
-    const buttonStyle = {
-        width: "100%",
-        padding: "12px",
-        background: "var(--accent)",
-        color: "#000",
-        border: "none",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontWeight: "bold",
-        fontSize: "16px"
-    };
-
     return (
-        <div style={containerStyle}>
-            <h2 style={{ textAlign: "center", marginBottom: "24px" }}>Register</h2>
+        <div className="auth-container">
+            <h2>Register</h2>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="auth-form-group">
                     <label>Full Name</label>
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} style={inputStyle} />
-                    {errors.name && <span style={{ color: "red", fontSize: "12px" }}>{errors.name}</span>}
+                    <input 
+                        type="text" 
+                        name="name" 
+                        value={formData.name} 
+                        onChange={handleChange} 
+                        className="auth-input"
+                    />
+                    {errors.name && <span className="auth-error">{errors.name}</span>}
                 </div>
 
-                <div>
+                <div className="auth-form-group">
                     <label>Username</label>
-                    <input type="text" name="username" value={formData.username} onChange={handleChange} style={inputStyle} />
-                    {errors.username && <span style={{ color: "red", fontSize: "12px" }}>{errors.username}</span>}
+                    <input 
+                        type="text" 
+                        name="username" 
+                        value={formData.username} 
+                        onChange={handleChange} 
+                        className="auth-input"
+                    />
+                    {errors.username && <span className="auth-error">{errors.username}</span>}
                 </div>
 
-                <div>
+                <div className="auth-form-group">
                     <label>Email Address</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} style={inputStyle} />
-                    {errors.email && <span style={{ color: "red", fontSize: "12px" }}>{errors.email}</span>}
+                    <input 
+                        type="email" 
+                        name="email" 
+                        value={formData.email} 
+                        onChange={handleChange} 
+                        className="auth-input"
+                    />
+                    {errors.email && <span className="auth-error">{errors.email}</span>}
                 </div>
 
-                <div>
+                <div className="auth-form-group">
                     <label>Phone Number</label>
-                    <input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} style={inputStyle} />
-                    {errors.phoneNumber && <span style={{ color: "red", fontSize: "12px" }}>{errors.phoneNumber}</span>}
+                    <input 
+                        type="text" 
+                        name="phoneNumber" 
+                        value={formData.phoneNumber} 
+                        onChange={handleChange} 
+                        className="auth-input"
+                    />
+                    {errors.phoneNumber && <span className="auth-error">{errors.phoneNumber}</span>}
                 </div>
 
-                {errors.contact && <div style={{ color: "red", fontSize: "12px", marginBottom: "16px" }}>{errors.contact}</div>}
+                {errors.contact && <div className="auth-error">{errors.contact}</div>}
 
-                <div>
+                <div className="auth-form-group">
                     <label>Password</label>
-                    <input type="password" name="password" value={formData.password} onChange={handleChange} style={inputStyle} />
-                    {errors.password && <span style={{ color: "red", fontSize: "12px" }}>{errors.password}</span>}
+                    <input 
+                        type="password" 
+                        name="password" 
+                        value={formData.password} 
+                        onChange={handleChange} 
+                        className="auth-input"
+                    />
+                    {errors.password && <span className="auth-error">{errors.password}</span>}
                 </div>
 
-                <button type="submit" style={buttonStyle}>Register Account</button>
+                <button type="submit" className="auth-button">
+                    Register Account
+                </button>
             </form>
-            <p style={{ marginTop: "16px", textAlign: "center", fontSize: "14px" }}>
-                Already registered? <Link to="/login" style={{ color: "var(--accent)" }}>Login here</Link>
+            <p className="auth-link">
+                Already registered? <Link to="/login">Login here</Link>
             </p>
         </div>
     );

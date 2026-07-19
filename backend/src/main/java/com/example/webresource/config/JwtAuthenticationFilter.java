@@ -28,21 +28,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7);
-            if (jwtUtils.validateToken(token)) {
-                String username = jwtUtils.getUsernameFromToken(token);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+        // Skip JWT logic for CORS preflight so Spring's CorsFilter can handle it
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
         }
+
+        try {
+            String authHeader = request.getHeader("Authorization");
+
+            if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                String token = authHeader.substring(7);
+                if (jwtUtils.validateToken(token)) {
+                    String username = jwtUtils.getUsernameFromToken(token);
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            }
+        } catch (Exception ex) {
+            // Never let a JWT parsing / DB lookup exception kill the request.
+            // permitAll() endpoints must survive even if the token is garbage.
+            logger.error("JWT filter error: " + ex.getMessage());
+        }
+
         filterChain.doFilter(request, response);
     }
 }

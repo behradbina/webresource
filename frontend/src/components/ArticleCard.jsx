@@ -7,7 +7,12 @@ function ArticleCard({ article, citationCount }) {
             
             <p className="summary">{article.summary}</p>
             
-            <div className="card-footer">
+            <div className="card-footer" style={{ 
+                display: "flex", 
+                flexDirection: "column", 
+                alignItems: "flex-start",
+                gap: "8px"
+            }}>
                 <span className="badge">
                     Cited by: {citationCount || 0}
                 </span>
