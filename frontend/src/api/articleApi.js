@@ -1,8 +1,14 @@
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.PROD 
+    ? '/api'  // In production, use relative path (nginx proxy)
+    : 'http://localhost:8080/api';  // In development
+
 const API = axios.create({
-    baseURL: "http://localhost:8080/api"
+    baseURL: API_BASE_URL
 });
+
+// Rest of your code remains the same...
 
 // Automatically inject JWT Bearer Token inside request header pipeline
 API.interceptors.request.use((config) => {

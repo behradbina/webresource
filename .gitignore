@@ -102,3 +102,14 @@ backend/data/
 merge.py
 backend.zip
 all_contents.txt
+
+.env
+*.env.local
+*.env.production.local
+
+# Database
+*.db
+*.mv.db
+*.trace.db
+*.log
+data/
