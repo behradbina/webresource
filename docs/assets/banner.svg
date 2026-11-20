@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="55%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="50%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .edge { stroke: #60a5fa; stroke-opacity: .35; stroke-width: 1.5; stroke-dasharray: 6 6; animation: flow 3s linear infinite; }
+      .node { fill: #93c5fd; animation: pulse 3s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+      .n2 { animation-delay: .6s; } .n3 { animation-delay: 1.2s; } .n4 { animation-delay: 1.8s; } .n5 { animation-delay: 2.4s; }
+      .fade { animation: fadeIn 1.2s ease-out both; }
+      .d1 { animation-delay: .2s; } .d2 { animation-delay: .5s; } .d3 { animation-delay: .8s; }
+      @keyframes flow { to { stroke-dashoffset: -24; } }
+      @keyframes pulse { 0%,100% { opacity: .55; transform: scale(1); } 50% { opacity: 1; transform: scale(1.35); } }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    </style>
+  </defs>
+
+  <rect width="1200" height="320" rx="18" fill="url(#bg)"/>
+
+  <!-- citation graph decoration -->
+  <g transform="translate(860 40)">
+    <circle cx="150" cy="120" r="110" fill="url(#glow)" opacity=".18"/>
+    <line class="edge" x1="60"  y1="60"  x2="170" y2="40"/>
+    <line class="edge" x1="60"  y1="60"  x2="130" y2="150"/>
+    <line class="edge" x1="170" y1="40"  x2="260" y2="110"/>
+    <line class="edge" x1="130" y1="150" x2="260" y2="110"/>
+    <line class="edge" x1="130" y1="150" x2="200" y2="220"/>
+    <line class="edge" x1="260" y1="110" x2="200" y2="220"/>
+    <circle class="node"    cx="60"  cy="60"  r="9"/>
+    <circle class="node n2" cx="170" cy="40"  r="7"/>
+    <circle class="node n3" cx="130" cy="150" r="11"/>
+    <circle class="node n4" cx="260" cy="110" r="8"/>
+    <circle class="node n5" cx="200" cy="220" r="7"/>
+  </g>
+
+  <g class="fade">
+    <text x="64" y="128" font-size="64" font-weight="800" fill="url(#title)">WebResource</text>
+  </g>
+  <g class="fade d1">
+    <text x="66" y="172" font-size="24" fill="#cbd5e1">Full-stack article platform with a citation graph &amp; JWT auth</text>
+  </g>
+
+  <!-- tech chips -->
+  <g class="fade d2" font-size="15" font-weight="600">
+    <g transform="translate(66 210)">
+      <rect width="120" height="34" rx="17" fill="#6db33f" fill-opacity=".18" stroke="#6db33f"/>
+      <text x="60" y="22" text-anchor="middle" fill="#a3e635">Spring Boot</text>
+    </g>
+    <g transform="translate(198 210)">
+      <rect width="138" height="34" rx="17" fill="#22c55e" fill-opacity=".12" stroke="#4ade80"/>
+      <text x="69" y="22" text-anchor="middle" fill="#86efac">Spring Security</text>
+    </g>
+    <g transform="translate(348 210)">
+      <rect width="70" height="34" rx="17" fill="#f472b6" fill-opacity=".14" stroke="#f472b6"/>
+      <text x="35" y="22" text-anchor="middle" fill="#f9a8d4">JWT</text>
+    </g>
+    <g transform="translate(430 210)">
+      <rect width="92" height="34" rx="17" fill="#61dafb" fill-opacity=".14" stroke="#61dafb"/>
+      <text x="46" y="22" text-anchor="middle" fill="#7dd3fc">React 19</text>
+    </g>
+    <g transform="translate(534 210)">
+      <rect width="70" height="34" rx="17" fill="#a78bfa" fill-opacity=".16" stroke="#a78bfa"/>
+      <text x="35" y="22" text-anchor="middle" fill="#c4b5fd">Vite</text>
+    </g>
+    <g transform="translate(616 210)">
+      <rect width="88" height="34" rx="17" fill="#38bdf8" fill-opacity=".14" stroke="#38bdf8"/>
+      <text x="44" y="22" text-anchor="middle" fill="#7dd3fc">Docker</text>
+    </g>
+  </g>
+
+  <g class="fade d3">
+    <text x="66" y="284" font-size="14" fill="#64748b">Java 21 · Hibernate / JPA · H2 · Nginx reverse proxy · REST API</text>
+  </g>
+</svg>

@@ -1,5 +1,6 @@
 package com.example.webresource.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -12,9 +13,13 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    // Must be at least 256 bits (32 characters) for HS256
-    private final String jwtSecret = "MySecuredSuperSecretKeyWithAtLeast32CharactersLengthForHS256AlgorithmSpec";
-    private final long jwtExpirationMs = 86400000; // 24 Hours
+    // Must be at least 256 bits (32 characters) for HS256.
+    // Read from the JWT_SECRET environment variable; the fallback is for local development only.
+    @Value("${JWT_SECRET:MySecuredSuperSecretKeyWithAtLeast32CharactersLengthForHS256AlgorithmSpec}")
+    private String jwtSecret;
+
+    @Value("${JWT_EXPIRATION_MS:86400000}") // 24 hours
+    private long jwtExpirationMs;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));

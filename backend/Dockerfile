@@ -9,7 +9,6 @@ COPY .mvn .mvn
 
 RUN chmod +x mvnw || true
 
-# Download dependencies first (better layer caching)
 RUN if [ -f "./mvnw" ]; then ./mvnw dependency:go-offline; else mvn dependency:go-offline; fi
 
 COPY src src
